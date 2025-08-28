@@ -53,4 +53,6 @@ OUTPUT :-
 <img width="1917" height="968" alt="image" src="https://github.com/user-attachments/assets/0222d05b-4fcb-4995-b3e5-4a3423f9a827" />
 
 
+
+## RESULT:
 The program was exceutted sucessfully.
