@@ -1,58 +1,130 @@
-## EX. NO: 1 : IMPLEMENTATION OF CAESAR CIPHER
-## NAME: NAVEEN . S
-## REG.NO: 212223240106
-## AIM:
+# Rail Fence Cipher
+Rail Fence Cipher using with different key values
 
-To implement the simple substitution technique named Caesar cipher using C language.
+## REGISTER NUMBER:212223240106
+## name : naveen.s
 
-## DESCRIPTION:
+# AIM:
 
-To encrypt a message with a Caesar cipher, each letter in the message is changed using a simple rule: shift by three. Each letter is replaced by the letter three letters ahead in the alphabet. A becomes D, B becomes E, and so on. For the last letters, we can think of the
-alphabet as a circle and "wrap around". W becomes Z, X becomes A, Y bec mes B, and Z
-becomes C. To change a message back, each letter is replaced by the one three before it.
+To develop a simple C program to implement Rail Fence Cipher.
 
-## EXAMPLE:
+## DESIGN STEPS:
 
-![image](https://github.com/Hemamanigandan/CNS/assets/149653568/eb9c6c43-8c80-4cdd-b9d4-91705a311c79)
+### Step 1:
 
-## ALGORITHM:
+Design of Rail Fence Cipher algorithnm 
 
-### STEP-1: Read the plain text from the user.
-### STEP-2: Read the key value from the user.
-### STEP-3: If the key is positive then encrypt the text by adding the key with each character in the plain text.
-### STEP-4: Else subtract the key from the plain text.
-### STEP-5: Display the cipher text obtained above.
+### Step 2:
 
+Implementation using C or pyhton code
 
-PROGRAM :-
-~~~
+### Step 3:
+
+Testing algorithm with different key values. 
+ALGORITHM DESCRIPTION:
+In the rail fence cipher, the plaintext is written downwards and diagonally on successive "rails" of an imaginary fence, then moving up when we reach the bottom rail. When we reach the top rail, the message is written downwards again until the whole plaintext is written out. The message is then read off in rows.
+
+## PROGRAM:
+
+```
+
 #include <stdio.h>
 #include <string.h>
-void caesarCipher(char *text, int shift) 
-{
-    for (int i = 0; text[i]; i++) 
-    {
-        if (text[i] >= 'A' && text[i] <= 'Z')
-        text[i] = ((text[i]- 'A' + shift) % 26) + 'A';
-        
-    }
- }
-int main() 
-{
-    char text[] = "NAVEEN";
-    printf("Plaintext: %s\n",text);
-    caesarCipher(text, 3);
-    printf("Encrypted Message: %s\n", text);
-    caesarCipher(text,-3);
-    printf("Decrypted Message: %s\n", text);
-    return 0;
+#include <stdbool.h>
+
+void encryptRailFence(char text[], int key, char result[]) {
+    int len = strlen(text);
+    char rail[key][len];
+    bool dir_down = false;
+    int row = 0, col = 0;
+
+  
+    for (int i = 0; i < key; i++)
+        for (int j = 0; j < len; j++)
+            rail[i][j] = '\n';
+
     
+    for (int i = 0; i < len; i++) {
+        if (row == 0 || row == key - 1)
+            dir_down = !dir_down;
+        rail[row][col++] = text[i];
+        row += dir_down ? 1 : -1;
+    }
+
+
+    int idx = 0;
+    for (int i = 0; i < key; i++)
+        for (int j = 0; j < len; j++)
+            if (rail[i][j] != '\n')
+                result[idx++] = rail[i][j];
+    result[idx] = '\0';
 }
-~~~
-OUTPUT :-
-<img width="1917" height="968" alt="image" src="https://github.com/user-attachments/assets/0222d05b-4fcb-4995-b3e5-4a3423f9a827" />
+
+void decryptRailFence(char cipher[], int key, char result[]) {
+    int len = strlen(cipher);
+    char rail[key][len];
+    bool dir_down;
+    int row, col;
+
+    for (int i = 0; i < key; i++)
+        for (int j = 0; j < len; j++)
+            rail[i][j] = '\n';
+
+    dir_down = false;
+    row = 0; col = 0;
+    for (int i = 0; i < len; i++) {
+        if (row == 0) dir_down = true;
+        if (row == key - 1) dir_down = false;
+        rail[row][col++] = '*';
+        row += dir_down ? 1 : -1;
+    }
+
+
+    int index = 0;
+    for (int i = 0; i < key; i++)
+        for (int j = 0; j < len; j++)
+            if (rail[i][j] == '*' && index < len)
+                rail[i][j] = cipher[index++];
+
+    result[len] = '\0';
+    row = 0; col = 0;
+    dir_down = false;
+    for (int i = 0; i < len; i++) {
+        if (row == 0) dir_down = true;
+        if (row == key - 1) dir_down = false;
+        result[i] = rail[row][col++];
+        row += dir_down ? 1 : -1;
+    }
+}
+
+int main() {
+    char text[100], cipher[100], decrypted[100];
+    int key;
+
+    printf("Enter plaintext: ");
+    scanf("%[^\n]", text);
+
+    printf("Enter key (number of rails): ");
+    scanf("%d", &key);
+
+    encryptRailFence(text, key, cipher);
+    printf("Ciphertext: %s\n", cipher);
+
+    decryptRailFence(cipher, key, decrypted);
+    printf("Decrypted text: %s\n", decrypted);
+
+    return 0;
+}
+
+```
+## OUTPUT:
+
+
+Simulating Rail Fence Cipher
+
+<img width="1834" height="908" alt="image" src="https://github.com/user-attachments/assets/f47b6ea7-a4d8-4738-aaaf-2375ccf822fe" />
 
 
 
 ## RESULT:
-The program was exceutted sucessfully.
+The program is executed successfully
